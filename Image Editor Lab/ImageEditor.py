@@ -19,6 +19,7 @@ def brighten(cats):
 def darken(cats):
     for x in range (430):
         for y in range (497):
+            list = [x]
             pixel = cats.getPixel(x,y)
             r = pixel[0] - 46
             g = pixel[1] - 46
@@ -33,41 +34,84 @@ def darken(cats):
 
 def blurr(cats):               
 
-    
-    return None
+    for x in range (430):
+        for y in range (497):
+
+            pixel = cats.getPixel(x,y)
+        
+            if x+1 > 429:
+                r = pixel[0]
+                g = pixel[1]
+                b = pixel[2]               
+
+            elif y+1 > 496:
+                r = pixel[0]
+                g = pixel[1]
+                b = pixel[2]                
+
+            elif x-1 < 0:
+                r = pixel[0]
+                g = pixel[1]
+                b = pixel[2]               
+
+            elif y-1 < 0:
+                r = pixel[0]
+                g = pixel[1]
+                b = pixel[2]
+              
+            else:
+                
+                pixel2 = cats.getPixel(x+1,y)
+                pixel3 = cats.getPixel(x, y+1)
+                pixel4 = cats.getPixel(x-1, y)
+                pixel5 = cats.getPixel(x, y-1)
+
+                r = (pixel[0] + pixel2[0] + pixel3[0] + pixel4[0] + pixel5[0])//5
+                g = (pixel[1] + pixel2[1] + pixel3[1] + pixel4[1] + pixel5[1])//5
+                b = (pixel[2] + pixel2[2] + pixel3[2] + pixel4[2] + pixel5[2])//5
+                cats.setPixel((x),(y),color_rgb(r,g,b))
+
+            
+        
+  
 
 def contrast(cats):
 
-    for x in range (430):
-        for y in range (497):
- 
+    for x in range(430):
+        for y in range(497):
             pixel = cats.getPixel(x,y)
+            r = pixel[0]
+            if r > 127:
+                r = pixel[0] + 33
+            if r < 127:
+                r = pixel[0] - 33
 
-            if pixel[0] < 128:
+            g = pixel[1]
+            if g > 127:
+                g = pixel[1] + 33
+            if g < 127:
+                g = pixel[1] - 33
+                    
+            b = pixel[2]
+            if b > 127:
+                b = pixel[2] + 33
+            if b < 127:
+                b = pixel[2] - 33
+                
+            if r - 33 < 0:
+                r = 0
+            if g - 33 < 0:
+                g = 0
+            if b - 33 < 0:
+                b = 0
+            if r + 33 > 255:
+                r = 255
+            if g + 33 > 255:
+                g = 255
+            if b + 33 > 255:
+                b = 255
             
-                r = pixel[0] - 46
-                g = pixel[1] - 46
-                b = pixel[2] - 46
-                if r - 46 < 0:
-                    r = 0
-                if g - 46 < 0:
-                    g = 0
-                if b - 46 < 0:
-                    b = 0
-                cats.setPixel(x,y,color_rgb(r,g,b))
-
-            else:
-                    pixel = cats.getPixel(x,y)
-                    r = pixel[0] + 46
-                    g = pixel[1] + 46
-                    b = pixel[2] + 46
-                    if r + 46 > 255:
-                        r = 255
-                    if g + 46 > 255:
-                        g = 255
-                    if b + 46 > 255:
-                        b = 255
-                    cats.setPixel(x,y,color_rgb(r,g,b)) 
+            cats.setPixel(x,y, color_rgb(r,g,b))
 
     
 def specialFilter(cats):
